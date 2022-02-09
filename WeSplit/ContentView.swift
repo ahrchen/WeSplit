@@ -7,6 +7,16 @@
 
 import SwiftUI
 
+struct WarningText: ViewModifier {
+    var tipPercentage: Int
+    var threshold: Int
+    
+    func body(content: Content) -> some View {
+        content
+            .foregroundColor(tipPercentage == threshold ? .red : .black)
+    }
+}
+
 struct ContentView: View {
     @State private var checkAmount = 0.0
     @State private var numberOfPeople = 2
@@ -68,7 +78,7 @@ struct ContentView: View {
                 
                 Section {
                     Text(totalAmount, format: currencyCode)
-                        .foregroundColor(tipPercentage == tipPercentageWarningThreshold ? .red : .black)
+                        .textWarning(tipPercentage: tipPercentage, threshold: tipPercentageWarningThreshold)
                 } header: {
                     Text("Total Amount Plus Tip")
                 }
@@ -90,5 +100,11 @@ struct ContentView: View {
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
         ContentView()
+    }
+}
+
+extension View {
+    func textWarning(tipPercentage: Int, threshold: Int) -> some View {
+        modifier(WarningText(tipPercentage: tipPercentage, threshold: threshold))
     }
 }
