@@ -13,6 +13,8 @@ struct ContentView: View {
     @State private var tipPercentage = 20
     @FocusState private var amountIsFocused: Bool
     
+    let tipPercentageWarningThreshold = 0
+    
     private var currencyCode: FloatingPointFormatStyle<Double>.Currency {
         .currency(code: Locale.current.currencyCode ?? "USD")
     }
@@ -66,6 +68,7 @@ struct ContentView: View {
                 
                 Section {
                     Text(totalAmount, format: currencyCode)
+                        .foregroundColor(tipPercentage == tipPercentageWarningThreshold ? .red : .black)
                 } header: {
                     Text("Total Amount Plus Tip")
                 }
